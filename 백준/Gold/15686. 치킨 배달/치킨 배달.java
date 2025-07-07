@@ -1,24 +1,10 @@
 import java.util.*;
 import java.io.*;
 public class Main {
-    static int [] num;
-    static int [] array3;
     static int [][] array;
-    static int [][][] array2;
     static boolean [] visit;
-    static boolean [][] visit2;
-    static boolean [][] visit3;
-    static int n,m,h;
-    static char [][] charArray;
-    static char [][] charArray2;
-    static int count;
-    static Map<Integer,Integer> map;
-    static Queue<Integer> que;
-    static int max = 0;
+    static int n,m;
     static int min = Integer.MAX_VALUE;
-    static StringBuilder sb = new StringBuilder();
-    static ArrayList<Integer> [] list;
-    static long a,b;
     static ArrayList<Node1> chickenList = new ArrayList<>();
     static ArrayList<Node1> homeList = new ArrayList<>();
 

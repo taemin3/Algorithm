@@ -15,7 +15,7 @@ class Solution {
             if (canCross(stones,k,mid)) {
                 low = mid + 1;
             } else {
-                high = mid - 1 ;
+                high = mid - 1;
             }
             
             

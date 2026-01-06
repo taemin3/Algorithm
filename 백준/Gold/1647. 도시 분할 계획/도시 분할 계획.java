@@ -43,7 +43,7 @@ class Main {
 
         parent = new int[N + 1];
         rank = new int[N+1];
-        Edge [] edges = new Edge[M];
+        List<Edge> edges = new ArrayList<>();
 
         for (int i = 1; i <= N;i++) {
             parent[i] = i;
@@ -55,10 +55,10 @@ class Main {
             int b = Integer.parseInt(st.nextToken());
             int c = Integer.parseInt(st.nextToken());
 
-            edges[i] = new Edge(a,b,c);
+            edges.add(new Edge(a,b,c));
         }
 
-        Arrays.sort(edges);
+        Collections.sort(edges);
 
         long ans = 0;
         int count = 0;

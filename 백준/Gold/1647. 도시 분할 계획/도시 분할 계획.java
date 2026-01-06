@@ -31,14 +31,7 @@ class Main {
         int ra = find(a);
         int rb = find(b);
         if (ra == rb) return false;
-        if (rank[ra] < rank[rb]) {
-            parent[ra] = rb;
-        } else if (rank[rb] < rank[ra]) {
-            parent[rb] = ra;
-        } else {
-            parent[rb] = ra;
-            rank[ra]++;
-        }
+        parent[rb] = ra;
         return true;
     }
     

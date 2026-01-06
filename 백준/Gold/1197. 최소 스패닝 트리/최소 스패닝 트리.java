@@ -32,14 +32,7 @@ class Main {
         int rb = find(b);
         if (ra == rb) return false;
 
-        if (rank[ra] < rank[rb]) {
-            parent[ra] = rb;
-        } else if (rank[rb] < rank[ra]) {
-            parent[rb] = ra;
-        } else {
-            parent[ra] = rb;
-            rank[rb]++;
-        }
+        parent[ra] = rb;
         return true;
     }
     

@@ -1,31 +1,30 @@
 import java.util.*;
+
 class Solution {
     public long solution(int n, int[] times) {
-        long answer = 0;
-        
-        int k = times.length;
-        
         Arrays.sort(times);
-        
-        long low = 0;
-        long high = (long) times[k - 1] * n;
-        
-        while(low <= high) {
-            long mid = (low + high) / 2;
+
+        long lo = 1;
+        long hi = (long) times[times.length - 1] * n;
+        long ans = hi;
+
+        while (lo <= hi) {
+            long mid = (lo + hi) / 2;
+
             long count = 0;
-            for (int i = 0 ; i < k ; i++) {
-                count += mid / times[i];                             
+            for (int t : times) {
+                count += mid / t;
+                if (count >= n) break; // 오버플로우/불필요 계산 방지
             }
-            if (count < n) { 
-                low = mid + 1;
+
+            if (count >= n) {
+                ans = mid;
+                hi = mid - 1;  // 더 작은 시간으로 가능한지
             } else {
-                high = mid - 1;
-                answer = mid;
+                lo = mid + 1;  // 시간이 부족
             }
         }
-        
-        return answer;
+
+        return ans;
     }
-    
-    
 }

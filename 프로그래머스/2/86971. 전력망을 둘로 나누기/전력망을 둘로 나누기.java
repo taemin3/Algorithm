@@ -1,58 +1,53 @@
 import java.util.*;
 
 class Solution {
-    static boolean[] visit;
-    static int[][] array;
-    static int count;
+    static List<Integer>[] graph;
+    
     public int solution(int n, int[][] wires) {
-        int min = 100;
-        int answer = -1;
-        count = 0;
-        array = new int[n+1][n+1];
-        visit = new boolean[n+1];
-        for (int i = 0; i < n - 1;i++) {
-            array[wires[i][0]][wires[i][1]] = 1;
-            array[wires[i][1]][wires[i][0]] = 1;
+        graph = new ArrayList[n+1];
+        for (int i = 1;i<=n;i++) {
+            graph[i] = new ArrayList<>();
         }
-        for (int i = 0;i < n - 1;i++) {
-            int result = 0;
-            
-            array[wires[i][0]][wires[i][1]] = 0;
-            array[wires[i][1]][wires[i][0]] = 0;
-            for (int j = 1;j <= n;j++) {
-                if(!visit[j]) {
-                    dfs(j,n);
-                    if (result == 0) {
-                        result = count;
-                    } else {
-                        if(result > count) {
-                            result -= count;
-                        } else {
-                            result = count - result;
-                        }
-                    }
-                    count = 0;
-                }
-            }
-            if (result < min) {
-                min = result;
-            }
-            array[wires[i][0]][wires[i][1]] = 1;
-            array[wires[i][1]][wires[i][0]] = 1;
-            Arrays.fill(visit, false);
-            
+        
+        for (int i = 0 ; i <wires.length;i++) {
+            int a = wires[i][0];
+            int b = wires[i][1];
+            graph[a].add(b);
+            graph[b].add(a);
         }
-        return min;
+        int ans = Integer.MAX_VALUE;
+        
+        for (int i = 0 ; i <wires.length;i++) {
+            int a = wires[i][0];
+            int b = wires[i][1];
+            graph[a].remove(Integer.valueOf(b));
+            graph[b].remove(Integer.valueOf(a));
+            int x = bfs(a,n);
+            int y = bfs(b,n);
+            int abs = Math.abs(x-y);
+            ans = Math.min(ans,abs);
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+        return ans;
     }
     
-    public static void dfs(int start,int n) {
-        count++;
+    public int bfs(int start, int n) {
+        int count = 1;
+        boolean [] visit = new boolean[n + 1];
         visit[start] = true;
-        for (int i = 1; i <= n;i++) {
-            if (array[start][i] == 1 && !visit[i]) {
-                
-                dfs(i,n);
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        while(!q.isEmpty()) {
+            int cur = q.poll();
+            for (int g : graph[cur]) {
+                if (visit[g]) continue;
+                visit[g] = true;
+                count++;
+                q.offer(g);
             }
         }
+        return count;
     }
+    
 }

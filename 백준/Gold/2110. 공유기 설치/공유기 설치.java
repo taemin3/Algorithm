@@ -22,7 +22,7 @@ class Main {
         Arrays.sort(arr);
 
         int lo = 0;
-        int hi = arr[N - 1];
+        int hi = arr[N - 1] - arr[0];
         int ans = 0;
         while(lo <= hi) {
             int mid = (lo + hi) / 2;

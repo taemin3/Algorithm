@@ -19,27 +19,27 @@ class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
-        List<Integer> list = new ArrayList<>();
+        int [] arr = new int[M];
         st = new StringTokenizer(br.readLine());
         for (int i = 0 ; i < M;i++) {
-            list.add(Integer.parseInt(st.nextToken()));
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-        parent = new int[M];
-        for (int i = 0;i < M;i++) {
+        parent = new int[M + 1];
+        for (int i = 0;i <= M;i++) {
             parent[i] = i;
         }
 
-        Collections.sort(list);
+        Arrays.sort(arr);
         StringBuilder sb = new StringBuilder();
         st = new StringTokenizer(br.readLine());
         for (int i = 0 ; i < K;i++) {
             int a = Integer.parseInt(st.nextToken());
             int lo = 0;
-            int hi = list.size() - 1;
+            int hi = arr.length - 1;
             int idx = 0;
             while(lo <= hi) {
                 int mid = (lo+hi) / 2;
-                int l = list.get(mid);
+                int l = arr[mid];
                 if (l > a) {
                     idx = mid;
                     hi = mid - 1;
@@ -48,10 +48,10 @@ class Main {
                 }
             }
             idx = find(idx);
-            sb.append(list.get(idx) + "\n");
-            if (idx + 1 < M) {
-                parent[idx] = find(idx + 1);
-            }
+            sb.append(arr[idx] + "\n");
+            
+            parent[idx] = find(idx + 1);
+            
             
                 
             

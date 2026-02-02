@@ -2,57 +2,55 @@ import java.util.*;
 class Solution {
     
     List<int[]>[] graph;
+    int [] dist;
+    int INF = 1_000_000_000;
     public int solution(int N, int[][] road, int K) {
         graph = new ArrayList[N + 1];
-        for (int i = 1; i <= N; i++) {
+        dist = new int[N + 1];
+        Arrays.fill(dist,INF);
+        
+        for (int i = 1; i <= N;i++) {
             graph[i] = new ArrayList<>();
         }
         
-        for (int[] r : road) {
-            int u = r[0];
-            int v = r[1];
-            int w = r[2];
+        for (int i = 0 ; i < road.length;i++) {
+            int a = road[i][0];
+            int b = road[i][1];
+            int c = road[i][2];
             
-            graph[u].add(new int[]{v,w});
-            graph[v].add(new int[]{u,w});
+            graph[a].add(new int[]{b,c});
+            graph[b].add(new int[]{a,c});
         }
-        int [] array = dijk(1,N);
-        int answer = 0 ;
-        for (int i = 1; i <= N;i++) {
-            System.out.println("i : " + array[i]);
-            if (array[i] <= K) {
-                answer++;
-            }
-        }
+        return dijk(K);
         
-        
-        return answer;
     }
     
-    public int[] dijk(int s, int n) {
-        int[] dist = new int[n+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
+    public int dijk(int k) {
+        dist[1] = 0;
         PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
-        pq.offer(new int[] {s,0});
-        dist[s] = 0;
+        pq.offer(new int[]{1,0});
         while(!pq.isEmpty()) {
             int [] cur = pq.poll();
             int now = cur[0];
             int cost = cur[1];
-            if (cost > dist[now]) continue;
-            
-            for (int[] g : graph[now]) {
-                int nxt = g[0];
-                int w = g[1];
-                if (cost + w < dist[nxt]) {
-                    dist[nxt] = cost + w;
-                    pq.offer(new int[] {nxt, cost + w});
+            if (dist[now] != cost) continue;
+            for (int [] g : graph[now]) {
+                if (cost + g[1] < dist[g[0]]) {
+                    dist[g[0]] = cost + g[1];
+                    pq.offer(new int[]{g[0], cost + g[1]});
                 }
             }
         }
-        return dist;
-        
+        int count = 1;
+        for (int i = 2 ; i < dist.length;i++) {
+            if (dist[i] <= k) {
+                count++;
+            }
+        }
+        return count;
     }
+    
+    
     
     
     

@@ -1,30 +1,27 @@
 import java.util.*;
 class Solution {
     public int solution(int cacheSize, String[] cities) {
-        int answer = 0;
-        
-
         LinkedList<String> list = new LinkedList<>();
+        int ans = 0;
         if (cacheSize == 0) {
             return cities.length * 5;
         }
-        for (String c : cities) {
-            c = c.toLowerCase();
-            if (list.contains(c)) {
-                answer += 1;
-                list.remove(c);
-                list.addFirst(c);
+        for (int i = 0; i < cities.length ;i++) {
+            String str = cities[i].toLowerCase();
+            if (list.contains(str)) {
+                int a = list.indexOf(str);
+                list.remove(a);
+                ans += 1;
+                list.add(str);
             } else {
-                answer += 5;
-                if (list.size() < cacheSize) {
-                    list.addFirst(c);
-                } else { 
-                    list.removeLast();
-                    list.addFirst(c);
+                if (list.size() >= cacheSize) {
+                    list.removeFirst();
                 }
+                
+                list.add(str);
+                ans += 5;
             }
         }
-        
-        return answer;
+        return ans;
     }
 }

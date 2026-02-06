@@ -2,55 +2,54 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-
+// The main method must be in a class named "Main".
 class Main {
+
     static char [][] map;
-    static boolean [] visit;
-    static int r, c;
-    static int max = 0;
-    static Set<Character> set;
+    static boolean [] alpha;
+    static int R, C;
+    static int ans = 0;
+    
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        r = Integer.parseInt(st.nextToken());
-        c = Integer.parseInt(st.nextToken());
         
-        set = new HashSet<>();
-
-        map = new char[r][c];
-        visit = new boolean[26];
-
-        for (int i =0; i < r;i++) {
+         R = Integer.parseInt(st.nextToken());
+         C = Integer.parseInt(st.nextToken());
+        map = new char[R][C];
+        alpha = new boolean[26];
+        
+        for (int i = 0; i < R;i++) {
             String str = br.readLine();
-            for (int j = 0; j < c;j++) {
+            for (int j = 0; j < C;j++) {
                 map[i][j] = str.charAt(j);
             }
         }
-        visit[map[0][0] - 'A'] = true;
-        bfs(0,0,1);
-        System.out.println(max);
+        char c = map[0][0];
+        alpha[c - 'A'] = true;
+        dfs(1,0,0);
+        System.out.println(ans);
+        
+        
     }
 
-    public static void bfs(int x , int y, int w) {
+    static void dfs(int depth,int x,int y) {
         
-        if (w > max) {
-            max = w;
-        }
         int [] dx = {1,-1,0,0};
         int [] dy = {0,0,1,-1};
-        
-       
-        
-            for (int i = 0;i < 4;i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-                if (nx < 0 || nx >= r || ny < 0 || ny >= c) continue;
-                if (visit[map[nx][ny] - 'A']) continue;
-                visit[map[nx][ny] - 'A'] = true;
-                bfs(nx,ny,w + 1);
-                visit[map[nx][ny] - 'A'] = false;
-            
-            }
+        ans = Math.max(ans,depth);
+        for (int i = 0; i < 4;i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx < 0 || nx >= R || ny < 0 || ny >= C) continue;
+            char c = map[nx][ny];
+            if (alpha[c - 'A']) continue;
+            alpha[c - 'A'] = true;
+            dfs(depth + 1, nx , ny);
+            alpha[c - 'A'] = false;
+        }
         
     }
+
+    
 }

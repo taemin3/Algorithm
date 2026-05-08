@@ -5,19 +5,22 @@ class Solution {
         int k = times.length;
         long lo = 1;
         long hi = (long) times[k - 1] * n;
+        
         long ans = 0;
+        
         while(lo <= hi) {
             long mid = (lo + hi) / 2;
             
-            long count = 0;
-            for (int t : times) {
-                count += mid / t;
+            long cnt = 0;
             
+            for (int t : times) {
+                cnt += mid / t;
             }
             
-            if (count >= n) {
+            if (cnt >= n) {
                 ans = mid;
                 hi = mid - 1;
+                
             } else {
                 lo = mid + 1;
             }

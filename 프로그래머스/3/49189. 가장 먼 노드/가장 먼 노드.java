@@ -1,60 +1,55 @@
 import java.util.*;
 class Solution {
     
-    static List<Integer>[] graph;
-    static int [] dist;
- 
+    List<Integer>[] graph;
+    boolean [] visit;
+    
     public int solution(int n, int[][] edge) {
+    
         graph = new ArrayList[n + 1];
-        dist = new int[n + 1];
-        Arrays.fill(dist,1_000_000_000);
-        dist[1] = 0;
         for (int i = 1; i <= n;i++) {
             graph[i] = new ArrayList<>();
         }
+       
         
         for (int [] e : edge) {
-            int a = e[0];
-            int b = e[1];
-            graph[a].add(b);
-            graph[b].add(a);
+            graph[e[0]].add(e[1]);
+            graph[e[1]].add(e[0]);
         }
         return bfs(n);
+        
     }
+    
     public int bfs(int n) {
+        visit = new boolean[n + 1];
         Queue<int[]> q = new LinkedList<>();
         q.offer(new int[]{1,0});
+        int max = 0;
+        int ans = 0;
+        visit[1] = true;
         
         while(!q.isEmpty()) {
-            
             int [] cur = q.poll();
             int now = cur[0];
-            
             int cost = cur[1];
-            
-           
-            if (dist[now] != cost) continue;
-            for (int g : graph[now]) {
-                
-                if (cost + 1 < dist[g]) {
-                    dist[g] = cost + 1;
-                    q.offer(new int[]{g, cost + 1});
-                }
+            if (cost == max) {
+                ans++;
+            } else if (cost > max) {
+                max = cost;
+                ans = 1;
             }
+            
+            
+            
+            for (int g : graph[now]) {
+                if (visit[g]) continue; 
+                visit[g] = true;
+                q.offer(new int[]{g, cost + 1});
+            }
+            
         }
-        int max = 0;
-    int cnt = 0;
-    for (int i = 2;i <= n;i++) {
-        if (dist[i] > max) {
-            max = dist[i];
-            cnt = 1;
-        } else if (dist[i] == max) {
-            cnt++;
-        } 
-    }
-    return cnt;
+        
+        return ans;
     }
     
-    
-  
 }
